@@ -32,3 +32,21 @@ steps:
     pathtoPublish: '$(System.DefaultWorkingDirectory)/target'
     artifactName: 'maven-web-app'
     publishLocation: 'Container'
+
+- task: CopyFilesOverSSH@0
+  inputs:
+    sshEndpoint: 'tomcat-server'
+    sourceFolder: '$(Build.ArtifactStagingDirectory)/maven-web-app'
+    contents: '**/*.war'
+    targetFolder: '/opt/tomcat/latest/webapps'
+    cleanTargetFolder: false
+    overwrite: true
+
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'tomcat-server'
+    runOptions: 'commands'
+    commands: |
+      sudo cp $(Build.ArtifactStagingDirectory)/maven-web-app/*.war /opt/tomcat/latest/webapps/
+      sudo systemctl restart tomcat
+    failOnStdErr: true
