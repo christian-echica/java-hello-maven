@@ -1,13 +1,3 @@
-resources:
-  repositories:
-  - repository: self
-    type: git
-    name: your-repository-name
-
-  - repository: sshEndpoint
-    type: ssh
-    connection: tomcat-server
-
 trigger:
 - main
 
