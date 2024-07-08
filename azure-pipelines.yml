@@ -5,11 +5,18 @@ pool:
   name: 'echica'
 
 steps:
+- script: |
+    echo "Setting MAVEN_OPTS"
+    export MAVEN_OPTS="-Xmx1024m"
+    echo "Running Maven Build"
+    mvn clean install -X -e
+  displayName: 'Run Maven Build with MAVEN_OPTS'
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
     goals: 'clean install'
-    options: '-X -e -Xmx1024m'
+    options: '-X -e'
     publishJUnitResults: true
     testResultsFiles: '**/target/surefire-reports/TEST-*.xml'
     javaHomeOption: 'Path'
