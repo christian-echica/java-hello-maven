@@ -42,7 +42,7 @@ steps:
     sshEndpoint: 'tomcat-server'
     sourceFolder: '$(Pipeline.Workspace)/maven-web-app'
     contents: '**/*.war'
-    targetFolder: '/opt/tomcat/latest/webapps'
+    targetFolder: '/home/adminuser/tmp'
     cleanTargetFolder: false
     overwrite: true
 
@@ -51,6 +51,6 @@ steps:
     sshEndpoint: 'tomcat-server'
     runOptions: 'commands'
     commands: |
-      sudo cp $(Pipeline.Workspace)/maven-web-app/*.war /opt/tomcat/latest/webapps/
+      sudo mv /home/adminuser/tmp/*.war /opt/tomcat/latest/webapps/
       sudo systemctl restart tomcat
     failOnStdErr: true
