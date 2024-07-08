@@ -26,3 +26,9 @@ steps:
     mavenAuthenticateFeed: false
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(System.DefaultWorkingDirectory)/target'
+    artifactName: 'maven-web-app'
+    publishLocation: 'Container'
