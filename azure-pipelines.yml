@@ -9,7 +9,7 @@ steps:
   inputs:
     mavenPomFile: 'pom.xml'
     goals: 'clean install'
-    options: '-Xmx1024m'
+    options: '-X -e -Xmx1024m'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     javaHomeOption: 'JDKVersion'
