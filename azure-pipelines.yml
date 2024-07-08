@@ -11,10 +11,11 @@ steps:
     goals: 'clean install'
     options: '-X -e -Xmx1024m'
     publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: 'default'
-    mavenVersionOption: 'Default'
+    testResultsFiles: '**/target/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'Path'
+    jdkDirectory: '/usr/lib/jvm/java-11-openjdk-amd64'
+    mavenVersionOption: 'Path'
+    mavenDirectory: '/usr/share/maven'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
