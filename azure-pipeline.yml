@@ -1,0 +1,56 @@
+trigger:
+- main
+
+pool:
+  name: 'echica'
+
+steps:
+- script: |
+    echo "Setting MAVEN_OPTS"
+    export MAVEN_OPTS="-Xmx1024m"
+    echo "Running Maven Build"
+    mvn clean install -X -e
+  displayName: 'Run Maven Build with MAVEN_OPTS'
+
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'clean install'
+    options: '-X -e'
+    publishJUnitResults: true
+    testResultsFiles: '**/target/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'Path'
+    jdkDirectory: '/usr/lib/jvm/java-11-openjdk-amd64'
+    mavenVersionOption: 'Path'
+    mavenDirectory: '/usr/share/maven'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/target'
+    artifact: 'maven-web-app'
+
+- task: DownloadPipelineArtifact@2
+  inputs:
+    artifactName: 'maven-web-app'
+    targetPath: '$(Pipeline.Workspace)/maven-web-app'
+
+- task: CopyFilesOverSSH@0
+  inputs:
+    sshEndpoint: 'bossing-connection'
+    sourceFolder: '$(Pipeline.Workspace)/maven-web-app'
+    contents: '**/*.war'
+    targetFolder: '/home/adminuser/tmp'
+    cleanTargetFolder: false
+    overwrite: true
+
+- task: SSH@0
+  inputs:
+    sshEndpoint: 'bossing-connection'
+    runOptions: 'commands'
+    commands: |
+      sudo mv /home/adminuser/tmp/*.war /opt/tomcat/latest/webapps/
+      sudo systemctl restart tomcat
+    failOnStdErr: true
