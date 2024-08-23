@@ -23,6 +23,7 @@
     <div class="container text-center">
         <img src="images/tomcat-maven-logo.png" alt="Maven Logo" class="logo">
         <h1 class="display-4">Hello Student!</h1>
+        <h2>Rami is here!</h2>
         <p class="lead">This Sample Java Web Application built using Maven</p>
         <hr class="my-4">
     </div>
