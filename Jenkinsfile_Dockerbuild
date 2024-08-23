@@ -38,7 +38,7 @@ pipeline {
                 // Build the Docker image
                 sh '''
                     echo "Building Docker image..."
-                    docker build -t xtian-web-app:1.0.0 .
+                    docker build -t xtian-web-app:1.2.0 .
                 '''
             }
         }
