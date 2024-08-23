@@ -22,8 +22,8 @@
 <body>
     <div class="container text-center">
         <img src="images/tomcat-maven-logo.png" alt="Maven Logo" class="logo">
-        <h1 class="display-4">Hello Azure Devops!</h1>
-        <p class="lead">Sample Java Web Application built using Maven</p>
+        <h1 class="display-4">Hello Student!</h1>
+        <p class="lead">This Sample Java Web Application built using Maven</p>
         <hr class="my-4">
     </div>
 
