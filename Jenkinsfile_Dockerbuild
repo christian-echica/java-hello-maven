@@ -4,7 +4,6 @@ pipeline {
     stages {
         stage('Check Environment Versions') {
             steps {
-                // Print Maven, Docker, and Java versions
                 sh '''
                     echo "Maven Version:"
                     mvn -version
@@ -18,8 +17,17 @@ pipeline {
 
         stage('List Files') {
             steps {
-                // List files in the workspace
                 sh 'ls -l'
+            }
+        }
+
+        stage('Fix Docker Permissions') {
+            steps {
+                // Change permissions on the Docker socket to allow Jenkins to access Docker
+                sh '''
+                    echo "Changing permissions on Docker socket..."
+                    sudo chmod 777 /var/run/docker.sock
+                '''
             }
         }
 
