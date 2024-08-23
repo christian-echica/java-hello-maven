@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Check Environment Versions') {
+            steps {
+                sh '''
+                    echo "Maven Version:"
+                    mvn -version
+                    echo "Docker Version:"
+                    docker --version
+                    echo "Java Version:"
+                    java -version
+                '''
+            }
+        }
+
+        stage('Clean Workspace') {
+            steps {
+                sh 'mvn clean'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Maven Build and Package') {
+            steps {
+                sh '''
+                    mvn clean install
+                    echo "WAR file location:"
+                    find $(pwd) -name "*.war"
+                '''
+            }
+        }
+
+        stage('Check Dependency Updates') {
+            steps {
+                sh 'mvn versions:display-dependency-updates'
+            }
+        }
+
+        stage('Deploy to Tomcat') {
+            steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-tomcat-id-key', keyFileVariable: 'SSH_KEY')]) {
+                    sh '''
+                        WAR_FILE=$(find $(pwd) -name "*.war")
+                        echo "Deploying $WAR_FILE to EC2 Tomcat server"
+                        scp -o StrictHostKeyChecking=no -i $SSH_KEY $WAR_FILE ubuntu@54.144.31.7:/home/ubuntu/
+                        ssh -i $SSH_KEY ubuntu@54.144.31.7 "sudo mv /home/ubuntu/$(basename $WAR_FILE) /opt/tomcat/apache-tomcat-10.1.28/webapps/"
+                    '''
+                }
+            }
+        }
+    }
+}
