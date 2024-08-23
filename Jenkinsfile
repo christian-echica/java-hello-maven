@@ -33,5 +33,18 @@ pipeline {
                 '''
             }
         }
+
+        stage('Deploy to Tomcat') {
+            steps {
+                // Deploy the WAR file to the EC2 Tomcat server using SSH credentials
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-tomcat-id-key', keyFileVariable: 'SSH_KEY')]) {
+                    sh '''
+                        WAR_FILE=$(find $(pwd) -name "*.war")
+                        echo "Deploying $WAR_FILE to EC2 Tomcat server"
+                        scp -i $SSH_KEY $WAR_FILE ubuntu@54.144.31.7:/opt/tomcat/webapps/
+                    '''
+                }
+            }
+        }
     }
 }
