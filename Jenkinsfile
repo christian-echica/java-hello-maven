@@ -41,7 +41,7 @@ pipeline {
                     sh '''
                         WAR_FILE=$(find $(pwd) -name "*.war")
                         echo "Deploying $WAR_FILE to EC2 Tomcat server"
-                        scp -i $SSH_KEY $WAR_FILE ubuntu@54.144.31.7:/opt/tomcat/webapps/
+                        scp -o StrictHostKeyChecking=no -i $SSH_KEY $WAR_FILE ubuntu@54.144.31.7:/opt/tomcat/webapps/
                     '''
                 }
             }
