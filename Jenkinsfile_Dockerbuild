@@ -21,19 +21,8 @@ pipeline {
             }
         }
 
-        stage('Fix Docker Permissions') {
-            steps {
-                // Change permissions on the Docker socket to allow Jenkins to access Docker
-                sh '''
-                    echo "Changing permissions on Docker socket..."
-                    sudo chmod 777 /var/run/docker.sock
-                '''
-            }
-        }
-
         stage('Docker Build') {
             steps {
-                // Build the Docker image
                 sh '''
                     echo "Building Docker image..."
                     docker build -t xtian-web-app:1.0.0 .
