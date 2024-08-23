@@ -22,5 +22,16 @@ pipeline {
                 sh 'ls -l'
             }
         }
+        
+        stage('Maven Build') {
+            steps {
+                // Run Maven build and show the path to the WAR file
+                sh '''
+                    mvn clean install
+                    echo "WAR file location:"
+                    find $(pwd) -name "*.war"
+                '''
+            }
+        }
     }
 }
