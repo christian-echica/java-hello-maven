@@ -42,7 +42,7 @@ pipeline {
                         WAR_FILE=$(find $(pwd) -name "*.war")
                         echo "Deploying $WAR_FILE to EC2 Tomcat server"
                         scp -o StrictHostKeyChecking=no -i $SSH_KEY $WAR_FILE ubuntu@54.226.69.10:/home/ubuntu/
-                        ssh -i $SSH_KEY ubuntu@54.144.31.7 "sudo mv /home/ubuntu/$(basename $WAR_FILE) /opt/tomcat/apache-tomcat-10.1.28/webapps/"
+                        ssh -i $SSH_KEY ubuntu@54.226.69.10 "sudo mv /home/ubuntu/$(basename $WAR_FILE) /opt/tomcat/apache-tomcat-10.1.28/webapps/"
                     '''
                 }
             }
